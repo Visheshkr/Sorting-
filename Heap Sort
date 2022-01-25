@@ -1,66 +1,47 @@
-// C++ program for implementation of Heap Sort
-#include <iostream>
-
+#include<iostream>
 using namespace std;
-
-// To heapify a subtree rooted with node i which is
-// an index in arr[]. n is size of heap
-void heapify(int arr[], int n, int i)
-{
-	int largest = i; // Initialize largest as root
-	int l = 2 * i + 1; // left = 2*i + 1
-	int r = 2 * i + 2; // right = 2*i + 2
-
-	// If left child is larger than root
-	if (l < n && arr[l] > arr[largest])
-		largest = l;
-
-	// If right child is larger than largest so far
-	if (r < n && arr[r] > arr[largest])
-		largest = r;
-
-	// If largest is not root
-	if (largest != i) {
-		swap(arr[i], arr[largest]);
-
-		// Recursively heapify the affected sub-tree
-		heapify(arr, n, largest);
-	}
+void heapify(int *a,int n,int i){
+    int largest=i;
+    int left=2*i+1;//for getting index value of left child
+    int right=2*i+2;//for getting index value of right child 
+    if(left<n&&a[left]>a[largest]){
+        largest=left;
+    }
+    if(right<n&&a[right]>a[largest]){
+        largest=right;
+    }
+    if(largest!=i){
+        swap(a[i],a[largest]);//checking that new of value of largest is not equal to i means we have found larger value of element so we need to swap it with the current index value
+        heapify(a,n,i);//again calling heapify for rearranging the tree 
+    }
 }
-
-// main function to do heap sort
-void heapSort(int arr[], int n)
+void heapsort(int *a,int n)
 {
-	// Build heap (rearrange array)
-	for (int i = n / 2 - 1; i >= 0; i--)
-		heapify(arr, n, i);
-
-	// One by one extract an element from heap
-	for (int i = n - 1; i > 0; i--) {
-		// Move current root to end
-		swap(arr[0], arr[i]);
-
-		// call max heapify on the reduced heap
-		heapify(arr, i, 0);
-	}
+    for (int i = n / 2 - 1; i >= 0; i--)//for non-leaf elements therefore  we are taking n/2-1 as we have n/2 elements as leaf elements in any heap
+        heapify(a, n, i);
+ 
+    for (int i = n - 1; i > 0; i--) {
+        swap(a[0], a[i]);//for removing root node value and adding it to the end of array for sorting in ascending order as we are building max heap here 
+ 
+        heapify(a, i, 0);
+    }
 }
-
-/* A utility function to print array of size n */
-void printArray(int arr[], int n)
-{
-	for (int i = 0; i < n; ++i)
-		cout << arr[i] << " ";
-	cout << "\n";
+void printArray(int *a,int n){
+    cout<<"\n The array elements are"<<endl;
+    for(int i=0;i<n;i++)
+    cout<<a[i]<<" ";
 }
-
-// Driver code
-int main()
-{
-	int arr[] = { 12, 11, 13, 5, 6, 7 };
-	int n = sizeof(arr) / sizeof(arr[0]);
-
-	heapSort(arr, n);
-
-	cout << "Sorted array is \n";
-	printArray(arr, n);
+int main(){
+    int n;
+    cout<<"\n Enter the size of the array"<<endl;
+    cin>>n;
+    int a[n];
+    cout<<"\n Enter the elements in the Array"<<endl;
+    for(int i=0;i<n;i++)
+    cin>>a[i];
+    printArray(a,n);
+    heapsort(a,n);
+    printArray(a,n);
+    return 0;
+    
 }
